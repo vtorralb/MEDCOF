@@ -1,3 +1,2 @@
-# MEDCOF
-# Training MEDCOF CST_Calibration
+# Scripts plots paper warmnights
 # November 2022
