@@ -83,7 +83,7 @@ for (y in 1:3){
                 drawleg = F,
                 filled.continents=F)
     map('world',lwd=0.5,add = T)
-    if (y==1){mtext(c('HWMI_ATn - HWMI_Tmin', 'HWMI_ATn - HWMI_Tn', 'HWMI_Tdisc - HWMI_Tmax'
+    if (y==1){mtext(c('HWMI_ATn - HWMI_Tmin', 'HWMI_ATn - HWMI_Tn', 'HWMI_ATn - HWMI_Tmax'
     )[n], side=2,font=2,line=3)}
   }
 }
