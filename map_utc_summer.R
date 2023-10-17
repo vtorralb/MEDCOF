@@ -2,17 +2,33 @@ library(lutz)
 library(s2dv)
 library(lubridate)
 library(RColorBrewer)
-lons <- seq(-14.5,59.5,by=0.05)
-lats <- seq(25.5,69.5,by=0.05)
+library(easyNCDF)
+
+lons <- seq(-14.5,59.5,by=1)
+lats <- seq(25.5,69.5,by=1)
 timeref <- Sys.time()
-map_utc_zones <- array(dim=c(length(lats),length(lons)))
+map_utc_zones <- array(dim=c(length(lons),length(lats)))
 for (lo in 1:length(lons)){
   for (la in 1:length(lats)){
-   zone <- tz_lookup_coords(lat=lats[la],lon=lons[lo])
-   date_aux <- format(timeref,tz=zone)
-  map_utc_zones[la,lo]  <-  hour(timeref)-hour(date_aux)
+    zone <- tz_lookup_coords(lat=lats[la],lon=lons[lo])
+    date_aux <- format(timeref,tz=zone)
+    map_utc_zones[lo,la]  <-  hour(timeref)-hour(date_aux)
   }
 }
+metadata <- list( map_utc_zones = list(dim = list(units=NULL)) )
+attr(map_utc_zones, 'variables') <- metadata 
+names(dim(map_utc_zones)) <- c('lon', 'lat') 
+lon <- lons
+dim(lon) <- length(lon)
+metadata <- list(lon = list(units = 'degrees_east'))
+attr(lon, 'variables') <- metadata
+lat <- lats
+dim(lat) <- length(lat)
+names(dim(lat)) <- 'lat'
+metadata <- list(lat = list(units = 'degrees_north'))
+attr(lat, 'variables') <- metadata
+ArrayToNc(list(lon,lat,map_utc_zones), '~/ERA5_mask_UTC_Europe.nc')
+
 
 map2plot <- -map_utc_zones +1
 #x11(width=12,height = 8)
