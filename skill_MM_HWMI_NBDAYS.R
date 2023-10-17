@@ -92,4 +92,4 @@ for (s in 1:length(hwmi)){
 
 
 path1 <- '/data/csp/vt17420/CLINT_proj/C3S/'
-saveRDS(skill_scores,paste0(path1,'C3S_mm_ndays_hwmi_seasonal_mean_05_15MJJ_1993_2016.RDS'))
+saveRDS(skill_scores,paste0(path1,'C3S_mm_ndays_hwmi_seasonal_mean_05_15MJJ_',var,'1993_2016.RDS'))
