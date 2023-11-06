@@ -3,13 +3,13 @@ library(RColorBrewer)
 library(s2dverification)
 library(multiApply)
 library(easyVerification)
-library(ClimProjDiags)qqqqqq
+library(ClimProjDiags)
 library(s2dv)
 library(corplot)
 
 years <- 1993:2016
 #data <- readRDS('/home/veronica/BSS_066_080_090_allsystems_15MJJA_1993_2016.RDS')
-data <- readRDS('/home/veronica/BSS_075_allsystems_15MJJA_1993_2016.RDS')
+data <- readRDS('/work/csp/vt17420/BSS_075_allsystems_15MJJA_1993_2016.RDS')
 lats <- seq(25.5,69.5, by=1)
 lons <- seq(-14.5, 59.5, by=1)
 reg <- list(
@@ -19,7 +19,7 @@ reg <- list(
   NAF=c(-10,12,25,36),
   CE=c(5,30,45,55),
   EE=c(30,60,40,60),
-  MI=c(25,43,25,42),
+  ME=c(25,43,25,42),
   ALL=c(-15,60,25,70))
 
 
@@ -30,7 +30,6 @@ funaux <- function(x,la,lo,rg){
   return(reg$data)
 }
 
-1
 ngp <- array(dim=c(length(reg), 2,length(data)))
 for (r in 1:length(reg)){
   for (var in 1:2){
@@ -127,11 +126,17 @@ cbar_cmcc <-c('#BC01FF','#6600CC','#6666FF','#4292c6',
               '#6baed6','#9ecae1','#c6dbef','#deebf7','#F0F8FF',
               '#f7fbff','#fff5f0','#fee0d2','#fcbba1','#fb6a4a',
               '#cb181d','#993404','#cc6600','#FFCA4D','#FFE24D','yellow')
+
+#cbar_cmcc <- c("#BC01FF", "#6600CC", "#6666FF", "#4366D5" ,"#2166AC", "#3885BC" ,
+#               "#62A6CD", "#98C8DF" ,"#C4DEEC", "#DAF2FE" ,"#FBD0B9","#F4AA88",
+#               "#E27B62" ,"#CB4A42", "#B2182B", "#993404" ,"#cc6600" ,"#FFCA4D",
+#               "#FFE426", "#FFFF00")
+
 pal1 <- cbar_cmcc
 
 labs <- c('a)','b)','c)','d)','e)','f)','g)','h)','i)','j)','k)','l)','m)','n)','o)')
 dim(labs) <- c(3,5)
-cairo_ps('~/BSS_075_allsys_MM_15MJJA_1993_2016_area.ps',width=12,height=16)
+cairo_ps('/work/csp/vt17420/BSS_075_allsys_MM_15MJJA_1993_2016_area.ps',width=12,height=16)
 par(oma=c(2,4,4,2),mar=c(4,2,2,2))
 layout(matrix(c(1:15,rep(16,2),17),ncol=3,byrow=T),heights=c(4.5,4.5,4.5,4.5,4.5,2))
 p <- 2
@@ -161,6 +166,7 @@ p <- 2
     if (s==1){mtext(side=3,text=c('HWMI','NQ90')[var],line=2,cex=1.5,font=2)}
     }
     par(mar=c(3,2,1,2))
+    cols <- c('#984ea3','#ff7f00')
     barplot(t(ngp[,,s]),beside = T,col=cols, ylim=c(0,100),ylab='',names.arg = names(reg),cex.lab=0.8,
             #main = c('CMCC-35','DWD-21','ECMWF-5','MF-7','MM')[s],
             las=2)
@@ -178,7 +184,7 @@ ColorBar(cols=pal1[2:(length(pal1)-1)],
          col_sup=pal1[length(pal1)],
          title = 'BSS (prob >0.75)',
          title_scale = 1.5,
-         col_inf = pal1[1],subsampleg = 1,label_scale = 1.3,draw_separators = T,
+         col_inf = pal1[1],subsampleg = 2,label_scale = 1.1,draw_separators = T,
          brks=seq(-0.45,0.45,by=0.05),vertical = F)
 dev.off()
 # 
